@@ -29,8 +29,13 @@ public class EmployeeController {
         return employeeRepository.findAll().stream().filter(employee -> employee.getAge() > Integer.parseInt(leastAge)).collect(Collectors.toList());
     }
 
-    @PutMapping("/employees")
-    public Employee updateOrSave(@RequestBody Employee employee){
+    @RequestMapping(value = "/employees", method = {RequestMethod.POST, RequestMethod.PUT})
+    public Employee updateOrSave(@RequestBody Employee employee) {
         return employeeRepository.updateOrSave(employee);
+    }
+
+    @DeleteMapping("/employees/{employeeID}")
+    public void delete(String employeeID) {
+        employeeRepository.delete(employeeID);
     }
 }
