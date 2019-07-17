@@ -1,10 +1,12 @@
 package com.tw.apistackbase.repository;
 
 import com.tw.apistackbase.entity.Employee;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-public class EmployeeRepository {
+@Repository
+public class EmployeeRepository implements MyRepository{
 
     private static Map<String, Employee> employees = new HashMap<>();
 

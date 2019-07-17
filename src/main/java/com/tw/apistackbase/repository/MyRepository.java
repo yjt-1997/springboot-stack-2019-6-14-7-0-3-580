@@ -4,7 +4,7 @@ import com.tw.apistackbase.entity.Employee;
 
 import java.util.List;
 
-public interface Repository {
+public interface MyRepository {
 
     List<Employee> findAll();
 

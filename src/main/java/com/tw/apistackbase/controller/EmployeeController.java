@@ -2,40 +2,41 @@ package com.tw.apistackbase.controller;
 
 
 import com.tw.apistackbase.entity.Employee;
-import com.tw.apistackbase.repository.EmployeeRepository;
+import com.tw.apistackbase.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 public class EmployeeController {
 
-    private EmployeeRepository employeeRepository = new EmployeeRepository();
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping("/employees")
     public List<Employee> list() {
-        return employeeRepository.findAll();
+        return employeeService.findAll();
     }
 
     @GetMapping("/employees/{employeeId}")
     public Employee findById(@PathVariable String employeeId) {
-        return employeeRepository.findById(employeeId);
+        return employeeService.findById(employeeId);
     }
 
-    @GetMapping("/employees/leastAge/{leastAge}")
-    public List<Employee> findAgeMoreThan(@PathVariable String leastAge) {
-        return employeeRepository.findAll().stream().filter(employee -> employee.getAge() > Integer.parseInt(leastAge)).collect(Collectors.toList());
+    @GetMapping(value = "/employees", params = "leastAge")
+    public List<Employee> findAgeMoreThan(@RequestParam int leastAge) {
+        return employeeService.findAll().stream().filter(employee -> employee.getAge() > leastAge).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/employees", method = {RequestMethod.POST, RequestMethod.PUT})
     public Employee updateOrSave(@RequestBody Employee employee) {
-        return employeeRepository.updateOrSave(employee);
+        return employeeService.updateOrSave(employee);
     }
 
     @DeleteMapping("/employees/{employeeID}")
     public void delete(String employeeID) {
-        employeeRepository.delete(employeeID);
+        employeeService.delete(employeeID);
     }
 }
